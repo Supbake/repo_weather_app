@@ -3,13 +3,14 @@ const input = document.querySelector(".banner input");
 const msg = document.querySelector(".banner .msg");
 const list = document.querySelector(".section .cities");
 const apiKey = "4f949f78d38c3de062060eb61de7bcd5";
+let date = new Date();
 
 form.addEventListener("submit", e => {
   e.preventDefault();
   let inputVal = input.value;
 
  
-  const listItems = list.querySelectorAll(".section .city");
+  const listItems = list.querySelectorAll(".section .cities");
   const listItemsArray = Array.from(listItems);
 
   if (listItemsArray.length > 0) {
@@ -48,8 +49,10 @@ form.addEventListener("submit", e => {
 
   fetch(url)
     .then(response => response.json())
+    
     .then(data => {
-      const { main, name, sys, weather } = data;
+        console.log(data);
+      const { main, name, sys, weather, wind, humidity, coord } = data;
       const icon = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
         weather[0]["icon"]
       }.svg`;
@@ -60,23 +63,39 @@ form.addEventListener("submit", e => {
         <h2 class="city-name" data-name="${name},${sys.country}">
           <span>${name}</span>
           <sup>${sys.country}</sup>
+          <br>
+          <small>${date.toLocaleDateString("en-US")}</small>
         </h2>
         <div class="city-temp">${Math.round(main.temp)}<sup>°F</sup></div>
+        <div class="city-wind">${wind.speed}<sup>MPH</sup></div>
+        <div class="city-humidity">${main.humidity}% humidity</div>
         <figure>
-          <img class="city-icon" src="${icon}" alt="${
-        weather[0]["description"]
-      }">
+          <img class="city-icon" src="${icon}" alt="${weather[0]["description"]}">
           <figcaption>${weather[0]["description"]}</figcaption>
         </figure>
       `;
       li.innerHTML = markup;
       list.appendChild(li);
+
+    //   const lat = coord.lat;
+    //   const lon = coord.lon; 
+    //   const urlTwo = 'api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey;
+  
+    //   fetch(urlTwo)
+    //       .then(response => response.json())
+    //       .then(data => {
+              
+    //           console.log(data)
+    //       })
     })
     .catch(() => {
-      msg.textContent = "Please search for a valid city 😩";
-    });
+      msg.textContent = "Please search for a valid city";
 
+   
+    });
+    
   msg.textContent = "";
   form.reset();
   input.focus();
 });
+
