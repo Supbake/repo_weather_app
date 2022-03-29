@@ -1,1 +1,1 @@
-# repo_weather_app
+this weather app is designed for the user to get a quick snap shot of the daily and weekly forcast for the requested city. The user will see data such as temp, date, time, wind speed, and humidity. 
